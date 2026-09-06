@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>RaceHub — Automobilismo ao vivo</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">
+        <span>R</span> RACEHUB
+    </div>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <nav id="menu">
+        <a href="#inicio">Início</a>
+        <a href="#ao-vivo">Ao vivo</a>
+        <a href="#proximas">Próximas</a>
+        <a href="#categorias">Categorias</a>
+    </nav>
+</header>
+
+
+<main id="inicio">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="tag">🏁 AUTOMOBILISMO</span>
+
+            <h1>
+                Todas as<br>
+                <strong>corridas.</strong>
+            </h1>
+
+            <p>
+                Encontre transmissões, horários e informações
+                das principais categorias do automobilismo.
+            </p>
+
+            <a href="#ao-vivo" class="main-button">
+                Ver transmissões
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- AO VIVO -->
+
+    <section id="ao-vivo" class="section">
+
+        <div class="section-title">
+            <div>
+                <span class="eyebrow">AGORA</span>
+                <h2>Ao vivo</h2>
+            </div>
+
+            <span class="live-status">
+                ● AO VIVO
+            </span>
+        </div>
+
+
+        <div class="race-card live-card">
+
+            <div class="race-top">
+
+                <span class="category">FÓRMULA 1</span>
+
+                <span class="live">
+                    ● LIVE
+                </span>
+
+            </div>
+
+
+            <h3>Grande Prêmio da Itália</h3>
+
+            <p class="location">
+                🇮🇹 Monza · Autodromo Nazionale
+            </p>
+
+
+            <div class="race-info">
+
+                <div>
+                    <small>SESSÃO</small>
+                    <strong>Corrida</strong>
+                </div>
+
+                <div>
+                    <small>HORÁRIO</small>
+                    <strong>10:00</strong>
+                </div>
+
+            </div>
+
+
+            <button class="watch-button">
+                ▶ Assistir transmissão
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORIAS -->
+
+    <section id="categorias" class="section">
+
+        <div class="section-title">
+
+            <div>
+                <span class="eyebrow">EXPLORE</span>
+                <h2>Categorias</h2>
+            </div>
+
+        </div>
+
+
+        <div class="categories">
+
+            <button onclick="filterRaces('all')" class="category-btn active">
+                Todas
+            </button>
+
+            <button onclick="filterRaces('f1')" class="category-btn">
+                F1
+            </button>
+
+            <button onclick="filterRaces('gt')" class="category-btn">
+                GT
+            </button>
+
+            <button onclick="filterRaces('stock')" class="category-btn">
+                Stock Car
+            </button>
+
+            <button onclick="filterRaces('endurance')" class="category-btn">
+                Endurance
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRÓXIMAS -->
+
+    <section id="proximas" class="section">
+
+        <div class="section-title">
+
+            <div>
+                <span class="eyebrow">CALENDÁRIO</span>
+                <h2>Próximas corridas</h2>
+            </div>
+
+        </div>
+
+
+        <div id="race-list">
+
+
+            <article class="race-item f1">
+
+                <div class="date">
+                    <strong>13</strong>
+                    <span>SET</span>
+                </div>
+
+                <div class="race-name">
+
+                    <span class="category">
+                        FÓRMULA 1
+                    </span>
+
+                    <h3>GP do Azerbaijão</h3>
+
+                    <p>🇦🇿 Baku City Circuit</p>
+
+                </div>
+
+                <div class="time">
+                    <span>DOM</span>
+                    <strong>08:00</strong>
+                </div>
+
+            </article>
+
+
+            <article class="race-item gt">
+
+                <div class="date">
+                    <strong>19</strong>
+                    <span>SET</span>
+                </div>
+
+                <div class="race-name">
+
+                    <span class="category">
+                        GT3
+                    </span>
+
+                    <h3>GT World Challenge</h3>
+
+                    <p>🇧🇪 Spa-Francorchamps</p>
+
+                </div>
+
+                <div class="time">
+                    <span>SÁB</span>
+                    <strong>11:30</strong>
+                </div>
+
+            </article>
+
+
+            <article class="race-item stock">
+
+                <div class="date">
+                    <strong>20</strong>
+                    <span>SET</span>
+                </div>
+
+                <div class="race-name">
+
+                    <span class="category">
+                        STOCK CAR
+                    </span>
+
+                    <h3>Stock Car Brasil</h3>
+
+                    <p>🇧🇷 Interlagos</p>
+
+                </div>
+
+                <div class="time">
+                    <span>DOM</span>
+                    <strong>14:00</strong>
+                </div>
+
+            </article>
+
+
+            <article class="race-item endurance">
+
+                <div class="date">
+                    <strong>26</strong>
+                    <span>SET</span>
+                </div>
+
+                <div class="race-name">
+
+                    <span class="category">
+                        WEC
+                    </span>
+
+                    <h3>6 Horas de Fuji</h3>
+
+                    <p>🇯🇵 Fuji Speedway</p>
+
+                </div>
+
+                <div class="time">
+                    <span>SÁB</span>
+                    <strong>23:00</strong>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- MENU MOBILE -->
+
+<div class="bottom-nav">
+
+    <a href="#inicio">
+        🏠
+        <span>Início</span>
+    </a>
+
+    <a href="#ao-vivo">
+        🔴
+        <span>Ao vivo</span>
+    </a>
+
+    <a href="#proximas">
+        📅
+        <span>Calendário</span>
+    </a>
+
+    <a href="#categorias">
+        🏁
+        <span>Categorias</span>
+    </a>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
