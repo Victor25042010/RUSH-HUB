@@ -1,165 +1,103 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>RaceHub</title>
 
-    <link
-        rel="stylesheet"
-        href="Index.css"
-    >
-
+    <link rel="stylesheet" href="index.css">
 </head>
-
 
 <body>
 
-
-<header>
-
+<header class="header">
     <div class="logo">
         RACE<span>HUB</span>
     </div>
 
-    <div class="status">
-
-        <span></span>
-
-        ONLINE
-
+    <div class="online">
+        <i></i> ATUALIZAÇÃO AUTOMÁTICA
     </div>
-
 </header>
-
 
 
 <main>
 
+    <section class="hero">
+        <span>AUTOMOBILISMO</span>
 
-<section class="hero">
+        <h1>
+            Todas as corridas.<br>
+            <strong>Um só lugar.</strong>
+        </h1>
 
-    <p>AUTOMOBILISMO</p>
-
-    <h1>
-        Todas as corridas.<br>
-        <strong>Um só lugar.</strong>
-    </h1>
-
-    <p class="description">
-
-        Calendário, próximas etapas e
-        transmissões em um único lugar.
-
-    </p>
-
-</section>
+        <p>
+            Calendários e transmissões das principais
+            categorias de automobilismo.
+        </p>
+    </section>
 
 
+    <section class="section">
 
-<section>
+        <div class="section-header">
+            <div>
+                <small>CALENDÁRIO</small>
+                <h2>Corridas</h2>
+            </div>
 
-    <div class="section-header">
+            <button id="refresh">↻</button>
+        </div>
 
-        <div>
 
-            <small>AGORA</small>
+        <div class="filters">
 
-            <h2>Eventos</h2>
+            <button class="filter active" data-filter="TODAS">
+                Todas
+            </button>
+
+            <button class="filter" data-filter="F1">
+                F1
+            </button>
+
+            <button class="filter" data-filter="WEC">
+                WEC
+            </button>
+
+            <button class="filter" data-filter="STOCK CAR">
+                Stock Car
+            </button>
 
         </div>
 
 
-        <button
-            onclick="loadRaces()"
-            class="refresh"
-        >
-
-            ↻
-
-        </button>
-
-    </div>
-
-
-    <div
-        id="races"
-        class="races"
-    >
-
-        <div class="loading">
-
+        <div id="status" class="status">
             Carregando calendário...
-
         </div>
 
-    </div>
 
-</section>
+        <div id="races"></div>
 
-
-
-<section>
-
-    <small>CATEGORIAS</small>
-
-    <div class="categories">
-
-        <button onclick="filter('ALL')">
-            Todas
-        </button>
-
-        <button onclick="filter('F1')">
-            F1
-        </button>
-
-        <button onclick="filter('WEC')">
-            WEC
-        </button>
-
-        <button onclick="filter('STOCK CAR')">
-            Stock Car
-        </button>
-
-    </div>
-
-</section>
-
+    </section>
 
 </main>
 
 
+<footer>
 
-<nav class="bottom">
+    <div>
+        RaceHub
+    </div>
 
-    <a href="#">
-        🏠
-        <span>Início</span>
-    </a>
+    <span>
+        Dados atualizados automaticamente
+    </span>
 
-    <a href="#races">
-        🏁
-        <span>Corridas</span>
-    </a>
-
-    <a href="#categorias">
-        📅
-        <span>Calendário</span>
-    </a>
-
-</nav>
+</footer>
 
 
-
-<script src="Index.js"></script>
+<script src="index.js"></script>
 
 </body>
-
 </html>
