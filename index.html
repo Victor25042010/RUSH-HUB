@@ -1,322 +1,165 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>RaceHub — Automobilismo ao vivo</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="Index.css">
+    <title>RaceHub</title>
+
+    <link
+        rel="stylesheet"
+        href="Index.css"
+    >
+
 </head>
+
 
 <body>
 
-<header class="header">
+
+<header>
+
     <div class="logo">
-        <span>R</span> RACEHUB
+        RACE<span>HUB</span>
     </div>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="status">
 
-    <nav id="menu">
-        <a href="#inicio">Início</a>
-        <a href="#ao-vivo">Ao vivo</a>
-        <a href="#proximas">Próximas</a>
-        <a href="#categorias">Categorias</a>
-    </nav>
+        <span></span>
+
+        ONLINE
+
+    </div>
+
 </header>
 
 
-<main id="inicio">
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <span class="tag">🏁 AUTOMOBILISMO</span>
-
-            <h1>
-                Todas as<br>
-                <strong>corridas.</strong>
-            </h1>
-
-            <p>
-                Encontre transmissões, horários e informações
-                das principais categorias do automobilismo.
-            </p>
-
-            <a href="#ao-vivo" class="main-button">
-                Ver transmissões
-            </a>
-
-        </div>
-
-    </section>
+<main>
 
 
-    <!-- AO VIVO -->
+<section class="hero">
 
-    <section id="ao-vivo" class="section">
+    <p>AUTOMOBILISMO</p>
 
-        <div class="section-title">
-            <div>
-                <span class="eyebrow">AGORA</span>
-                <h2>Ao vivo</h2>
-            </div>
+    <h1>
+        Todas as corridas.<br>
+        <strong>Um só lugar.</strong>
+    </h1>
 
-            <span class="live-status">
-                ● AO VIVO
-            </span>
-        </div>
+    <p class="description">
 
+        Calendário, próximas etapas e
+        transmissões em um único lugar.
 
-        <div class="race-card live-card">
+    </p>
 
-            <div class="race-top">
-
-                <span class="category">FÓRMULA 1</span>
-
-                <span class="live">
-                    ● LIVE
-                </span>
-
-            </div>
+</section>
 
 
-            <h3>Grande Prêmio da Itália</h3>
 
-            <p class="location">
-                🇮🇹 Monza · Autodromo Nazionale
-            </p>
+<section>
 
+    <div class="section-header">
 
-            <div class="race-info">
+        <div>
 
-                <div>
-                    <small>SESSÃO</small>
-                    <strong>Corrida</strong>
-                </div>
+            <small>AGORA</small>
 
-                <div>
-                    <small>HORÁRIO</small>
-                    <strong>10:00</strong>
-                </div>
-
-            </div>
-
-
-            <button class="watch-button">
-                ▶ Assistir transmissão
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- CATEGORIAS -->
-
-    <section id="categorias" class="section">
-
-        <div class="section-title">
-
-            <div>
-                <span class="eyebrow">EXPLORE</span>
-                <h2>Categorias</h2>
-            </div>
+            <h2>Eventos</h2>
 
         </div>
 
 
-        <div class="categories">
+        <button
+            onclick="loadRaces()"
+            class="refresh"
+        >
 
-            <button onclick="filterRaces('all')" class="category-btn active">
-                Todas
-            </button>
+            ↻
 
-            <button onclick="filterRaces('f1')" class="category-btn">
-                F1
-            </button>
+        </button>
 
-            <button onclick="filterRaces('gt')" class="category-btn">
-                GT
-            </button>
-
-            <button onclick="filterRaces('stock')" class="category-btn">
-                Stock Car
-            </button>
-
-            <button onclick="filterRaces('endurance')" class="category-btn">
-                Endurance
-            </button>
-
-        </div>
-
-    </section>
+    </div>
 
 
-    <!-- PRÓXIMAS -->
+    <div
+        id="races"
+        class="races"
+    >
 
-    <section id="proximas" class="section">
+        <div class="loading">
 
-        <div class="section-title">
-
-            <div>
-                <span class="eyebrow">CALENDÁRIO</span>
-                <h2>Próximas corridas</h2>
-            </div>
+            Carregando calendário...
 
         </div>
 
+    </div>
 
-        <div id="race-list">
-
-
-            <article class="race-item f1">
-
-                <div class="date">
-                    <strong>13</strong>
-                    <span>SET</span>
-                </div>
-
-                <div class="race-name">
-
-                    <span class="category">
-                        FÓRMULA 1
-                    </span>
-
-                    <h3>GP do Azerbaijão</h3>
-
-                    <p>🇦🇿 Baku City Circuit</p>
-
-                </div>
-
-                <div class="time">
-                    <span>DOM</span>
-                    <strong>08:00</strong>
-                </div>
-
-            </article>
+</section>
 
 
-            <article class="race-item gt">
 
-                <div class="date">
-                    <strong>19</strong>
-                    <span>SET</span>
-                </div>
+<section>
 
-                <div class="race-name">
+    <small>CATEGORIAS</small>
 
-                    <span class="category">
-                        GT3
-                    </span>
+    <div class="categories">
 
-                    <h3>GT World Challenge</h3>
+        <button onclick="filter('ALL')">
+            Todas
+        </button>
 
-                    <p>🇧🇪 Spa-Francorchamps</p>
+        <button onclick="filter('F1')">
+            F1
+        </button>
 
-                </div>
+        <button onclick="filter('WEC')">
+            WEC
+        </button>
 
-                <div class="time">
-                    <span>SÁB</span>
-                    <strong>11:30</strong>
-                </div>
+        <button onclick="filter('STOCK CAR')">
+            Stock Car
+        </button>
 
-            </article>
+    </div>
 
-
-            <article class="race-item stock">
-
-                <div class="date">
-                    <strong>20</strong>
-                    <span>SET</span>
-                </div>
-
-                <div class="race-name">
-
-                    <span class="category">
-                        STOCK CAR
-                    </span>
-
-                    <h3>Stock Car Brasil</h3>
-
-                    <p>🇧🇷 Interlagos</p>
-
-                </div>
-
-                <div class="time">
-                    <span>DOM</span>
-                    <strong>14:00</strong>
-                </div>
-
-            </article>
-
-
-            <article class="race-item endurance">
-
-                <div class="date">
-                    <strong>26</strong>
-                    <span>SET</span>
-                </div>
-
-                <div class="race-name">
-
-                    <span class="category">
-                        WEC
-                    </span>
-
-                    <h3>6 Horas de Fuji</h3>
-
-                    <p>🇯🇵 Fuji Speedway</p>
-
-                </div>
-
-                <div class="time">
-                    <span>SÁB</span>
-                    <strong>23:00</strong>
-                </div>
-
-            </article>
-
-        </div>
-
-    </section>
+</section>
 
 
 </main>
 
 
-<!-- MENU MOBILE -->
 
-<div class="bottom-nav">
+<nav class="bottom">
 
-    <a href="#inicio">
+    <a href="#">
         🏠
         <span>Início</span>
     </a>
 
-    <a href="#ao-vivo">
-        🔴
-        <span>Ao vivo</span>
+    <a href="#races">
+        🏁
+        <span>Corridas</span>
     </a>
 
-    <a href="#proximas">
+    <a href="#categorias">
         📅
         <span>Calendário</span>
     </a>
 
-    <a href="#categorias">
-        🏁
-        <span>Categorias</span>
-    </a>
+</nav>
 
-</div>
 
 
 <script src="Index.js"></script>
 
 </body>
+
 </html>
