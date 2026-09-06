@@ -1,404 +1,252 @@
 * {
-
     margin: 0;
-
     padding: 0;
-
     box-sizing: border-box;
-
 }
 
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-
     background: #070707;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    padding-bottom: 80px;
-
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
-
-header {
-
+.header {
     height: 65px;
-
+    padding: 0 6%;
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
-    padding: 0 20px;
-
     border-bottom: 1px solid #222;
-
+    position: sticky;
+    top: 0;
+    background: rgba(7,7,7,.96);
+    z-index: 10;
 }
-
 
 .logo {
-
+    font-size: 18px;
     font-weight: 900;
-
     letter-spacing: 2px;
-
 }
-
 
 .logo span {
-
     color: #888;
-
 }
 
-
-.status {
-
-    font-size: 9px;
-
+.online {
+    font-size: 8px;
     color: #777;
-
+    letter-spacing: 1px;
 }
 
-
-.status span {
-
-    display: inline-block;
-
+.online i {
     width: 6px;
-
     height: 6px;
-
-    background: #39ff88;
-
+    display: inline-block;
+    background: #48e889;
     border-radius: 50%;
-
     margin-right: 5px;
-
 }
-
 
 main {
-
-    max-width: 800px;
-
+    max-width: 900px;
     margin: auto;
-
 }
-
 
 .hero {
-
-    padding: 70px 20px;
-
+    padding: 90px 6% 70px;
 }
 
-
-.hero > p:first-child {
-
+.hero > span {
     color: #777;
-
-    letter-spacing: 3px;
-
     font-size: 10px;
-
+    letter-spacing: 3px;
+    font-weight: bold;
 }
-
 
 .hero h1 {
-
-    font-size: clamp(45px, 13vw, 90px);
-
+    font-size: clamp(48px, 13vw, 90px);
     line-height: .9;
-
     margin: 20px 0;
-
 }
-
 
 .hero h1 strong {
-
     font-style: italic;
-
 }
 
-
-.description {
-
+.hero p {
     color: #888;
-
-    max-width: 400px;
-
+    max-width: 420px;
     line-height: 1.6;
-
+    font-size: 14px;
 }
 
-
-section {
-
-    padding: 30px 20px;
-
+.section {
+    padding: 20px 6% 80px;
 }
-
 
 .section-header {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
-    margin-bottom: 20px;
-
 }
 
-
-small {
-
+.section-header small {
     color: #777;
-
     font-size: 9px;
-
     letter-spacing: 2px;
-
 }
 
-
-h2 {
-
-    font-size: 30px;
-
+.section-header h2 {
     margin-top: 5px;
-
+    font-size: 32px;
 }
 
-
-.refresh {
-
-    background: #151515;
-
+#refresh {
     border: 1px solid #292929;
-
-    color: white;
-
-    width: 40px;
-
-    height: 40px;
-
+    background: #111;
+    color: #fff;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-
-    font-size: 20px;
-
+    font-size: 21px;
 }
 
+.filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 25px 0;
+    padding-bottom: 5px;
+}
+
+.filter {
+    flex-shrink: 0;
+    border: 1px solid #292929;
+    background: #111;
+    color: #888;
+    padding: 11px 17px;
+    border-radius: 30px;
+}
+
+.filter.active {
+    background: #fff;
+    color: #000;
+}
+
+.status {
+    color: #666;
+    font-size: 12px;
+    padding: 20px 0;
+}
 
 .race {
-
-    background: #111;
-
+    background: #101010;
     border: 1px solid #242424;
-
-    border-radius: 8px;
-
+    border-radius: 9px;
     padding: 20px;
-
     margin-bottom: 12px;
-
 }
-
 
 .race-top {
-
     display: flex;
-
     justify-content: space-between;
-
     margin-bottom: 15px;
-
 }
-
 
 .category {
-
-    color: #888;
-
+    color: #aaa;
     font-size: 9px;
-
     font-weight: bold;
-
-    letter-spacing: 1px;
-
+    letter-spacing: 1.5px;
 }
 
-
-.next {
-
+.state {
     color: #777;
-
     font-size: 9px;
-
 }
-
 
 .race h3 {
-
     font-size: 22px;
-
-    margin-bottom: 7px;
-
+    margin-bottom: 8px;
 }
-
 
 .date {
-
-    color: #888;
-
-    font-size: 13px;
-
-}
-
-
-.transmission {
-
-    margin-top: 20px;
-
-    padding-top: 15px;
-
-    border-top: 1px solid #222;
-
-}
-
-
-.transmission p {
-
     color: #777;
-
-    font-size: 10px;
-
-    margin-bottom: 8px;
-
+    font-size: 13px;
 }
 
+.source {
+    margin-top: 18px;
+    padding-top: 15px;
+    border-top: 1px solid #222;
+    color: #777;
+    font-size: 10px;
+}
 
 .watch {
-
     display: block;
-
-    text-align: center;
-
+    margin-top: 13px;
     padding: 13px;
-
-    background: white;
-
-    color: black;
-
+    background: #fff;
+    color: #000;
     text-decoration: none;
-
-    font-weight: bold;
-
-    font-size: 12px;
-
-}
-
-
-.disabled {
-
-    background: #222;
-
-    color: #666;
-
-    pointer-events: none;
-
-}
-
-
-.categories {
-
-    display: flex;
-
-    gap: 8px;
-
-    overflow-x: auto;
-
-    margin-top: 15px;
-
-}
-
-
-.categories button {
-
-    white-space: nowrap;
-
-    background: #111;
-
-    color: #aaa;
-
-    border: 1px solid #292929;
-
-    border-radius: 20px;
-
-    padding: 12px 18px;
-
-}
-
-
-.loading {
-
-    color: #666;
-
-    padding: 30px 0;
-
-}
-
-
-.bottom {
-
-    position: fixed;
-
-    bottom: 0;
-
-    left: 0;
-
-    right: 0;
-
-    height: 70px;
-
-    background: #0d0d0d;
-
-    border-top: 1px solid #222;
-
-    display: flex;
-
-    justify-content: space-around;
-
-    align-items: center;
-
-}
-
-
-.bottom a {
-
-    color: #777;
-
-    text-decoration: none;
-
     text-align: center;
-
-    font-size: 18px;
-
+    font-size: 12px;
+    font-weight: bold;
 }
 
-
-.bottom span {
-
+.calendar-link {
     display: block;
+    margin-top: 8px;
+    color: #777;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+}
 
-    font-size: 9px;
+.empty {
+    padding: 40px 10px;
+    text-align: center;
+    color: #666;
+}
 
-    margin-top: 4px;
+footer {
+    border-top: 1px solid #222;
+    padding: 30px 6%;
+    color: #777;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+}
 
+@media (max-width: 600px) {
+
+    .header {
+        padding: 0 20px;
+    }
+
+    .online {
+        font-size: 7px;
+    }
+
+    .hero {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
