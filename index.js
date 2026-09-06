@@ -10,46 +10,88 @@ let currentFilter = "TODAS";
 
 async function loadRaces() {
 
-    statusElement.textContent =
-        "Atualizando calendário...";
+    statusElement.textContent = "Carregando calendário...";
 
     try {
 
-        const response = await fetch(
-            `data/index.json?t=${Date.now()}`
-        );
+        const paths = [
+            "./data/index.json",
+            "data/index.json"
+        ];
 
-        if (!response.ok) {
-            throw new Error("Arquivo de dados não encontrado");
+        let response = null;
+
+        for (const path of paths) {
+
+            try {
+
+                const test = await fetch(
+                    `${path}?t=${Date.now()}`,
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+                if (test.ok) {
+                    response = test;
+                    break;
+                }
+
+            } catch (e) {
+                console.log("Tentativa falhou:", path);
+            }
+        }
+
+        if (!response) {
+            throw new Error("Não foi possível encontrar data/index.json");
         }
 
         const data = await response.json();
 
-        races = data.races || [];
+        races = Array.isArray(data.races)
+            ? data.races
+            : [];
+
+        // Remove entradas inválidas
+        races = races.filter(race =>
+            race &&
+            race.name &&
+            race.name !== "Data" &&
+            race.name !== "Evento"
+        );
 
         render();
 
-        const updated = data.updatedAt
-            ? new Date(data.updatedAt).toLocaleString("pt-BR")
-            : "desconhecido";
+        if (data.updatedAt) {
 
-        statusElement.textContent =
-            `Última atualização: ${updated}`;
+            const date = new Date(data.updatedAt);
+
+            statusElement.textContent =
+                `Atualizado em ${date.toLocaleString("pt-BR")}`;
+
+        } else {
+
+            statusElement.textContent =
+                `${races.length} eventos encontrados`;
+
+        }
 
     } catch (error) {
 
-        console.error(error);
+        console.error("RaceHub:", error);
 
         statusElement.textContent =
-            "Não foi possível carregar o calendário.";
+            "Erro ao carregar o calendário.";
 
         racesContainer.innerHTML = `
             <div class="empty">
-                <h3>Calendário sendo preparado</h3>
+
+                <h3>Não foi possível carregar</h3>
+
                 <p>
-                    O GitHub Actions ainda não gerou
-                    os dados. Aguarde a primeira atualização.
+                    O calendário ainda não está disponível.
                 </p>
+
             </div>
         `;
     }
@@ -64,17 +106,17 @@ function render() {
 
         filtered = races.filter(
             race =>
-                race.category.toUpperCase() === currentFilter
+                String(race.category || "").toUpperCase()
+                === currentFilter
         );
-
     }
+
 
     if (!filtered.length) {
 
         racesContainer.innerHTML = `
             <div class="empty">
-                Nenhuma corrida encontrada
-                para esta categoria.
+                Nenhuma corrida encontrada.
             </div>
         `;
 
@@ -83,7 +125,7 @@ function render() {
 
 
     racesContainer.innerHTML = filtered
-        .map(race => createRaceCard(race))
+        .map(createRaceCard)
         .join("");
 }
 
@@ -97,24 +139,24 @@ function createRaceCard(race) {
         transmission = `
             <a
                 class="watch"
-                href="${race.transmissionUrl}"
+                href="${escapeHTML(race.transmissionUrl)}"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
             >
                 ▶ Assistir transmissão
             </a>
         `;
 
-    } else {
+    } else if (race.searchUrl) {
 
         transmission = `
             <a
                 class="watch"
-                href="${race.searchUrl}"
+                href="${escapeHTML(race.searchUrl)}"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
             >
-                🔎 Procurar transmissão
+                ▶ Procurar transmissão
             </a>
         `;
     }
@@ -135,36 +177,34 @@ function createRaceCard(race) {
 
             </div>
 
-
             <h3>
                 ${escapeHTML(race.name)}
             </h3>
-
 
             <p class="date">
                 📅 ${escapeHTML(race.date || "Data não informada")}
             </p>
 
-
-            <div class="source">
-
-                Calendário:
-                ${escapeHTML(race.source || "Fonte oficial")}
-
-            </div>
-
+            ${
+                race.source
+                ? `
+                    <div class="source">
+                        Calendário: ${escapeHTML(race.source)}
+                    </div>
+                `
+                : ""
+            }
 
             ${transmission}
-
 
             ${
                 race.calendarUrl
                 ? `
                     <a
                         class="calendar-link"
-                        href="${race.calendarUrl}"
+                        href="${escapeHTML(race.calendarUrl)}"
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                     >
                         Ver calendário da fonte →
                     </a>
@@ -202,7 +242,6 @@ filters.forEach(button => {
             button.dataset.filter;
 
         render();
-
     });
 
 });
