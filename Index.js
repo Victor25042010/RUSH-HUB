@@ -1,266 +1,217 @@
-let allRaces = [];
+const racesContainer = document.getElementById("races");
+const statusElement = document.getElementById("status");
+const refreshButton = document.getElementById("refresh");
 
+const filters = document.querySelectorAll(".filter");
 
-// ======================================
-// CARREGAR CORRIDAS
-// ======================================
+let races = [];
+let currentFilter = "TODAS";
+
 
 async function loadRaces() {
 
-    const container =
-        document.getElementById("races");
-
-
-    container.innerHTML =
-        `<div class="loading">
-            Atualizando calendário...
-        </div>`;
-
+    statusElement.textContent =
+        "Atualizando calendário...";
 
     try {
 
-        const response =
-            await fetch("/api/races");
+        const response = await fetch(
+            `data/index.json?t=${Date.now()}`
+        );
 
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            throw new Error();
-
+        if (!response.ok) {
+            throw new Error("Arquivo de dados não encontrado");
         }
 
+        const data = await response.json();
 
-        allRaces = data.races;
+        races = data.races || [];
 
+        render();
 
-        renderRaces(allRaces);
+        const updated = data.updatedAt
+            ? new Date(data.updatedAt).toLocaleString("pt-BR")
+            : "desconhecido";
 
+        statusElement.textContent =
+            `Última atualização: ${updated}`;
 
     } catch (error) {
 
-        container.innerHTML = `
+        console.error(error);
 
-            <div class="loading">
+        statusElement.textContent =
+            "Não foi possível carregar o calendário.";
 
-                Não foi possível atualizar
-                o calendário.
-
+        racesContainer.innerHTML = `
+            <div class="empty">
+                <h3>Calendário sendo preparado</h3>
+                <p>
+                    O GitHub Actions ainda não gerou
+                    os dados. Aguarde a primeira atualização.
+                </p>
             </div>
-
         `;
-
     }
-
 }
 
 
-// ======================================
-// MOSTRAR CORRIDAS
-// ======================================
+function render() {
 
-function renderRaces(races) {
+    let filtered = races;
 
-    const container =
-        document.getElementById("races");
+    if (currentFilter !== "TODAS") {
 
-
-    if (!races.length) {
-
-        container.innerHTML =
-            `<div class="loading">
-                Nenhuma corrida encontrada.
-            </div>`;
-
-        return;
+        filtered = races.filter(
+            race =>
+                race.category.toUpperCase() === currentFilter
+        );
 
     }
 
+    if (!filtered.length) {
 
-    container.innerHTML = "";
+        racesContainer.innerHTML = `
+            <div class="empty">
+                Nenhuma corrida encontrada
+                para esta categoria.
+            </div>
+        `;
 
-
-    races.forEach(race => {
-
-        const transmission =
-            race.transmissionData;
-
-
-        let button = "";
-
-
-        if (
-            transmission &&
-            transmission.url
-        ) {
-
-            button = `
-
-                <a
-                    class="watch"
-                    href="${transmission.url}"
-                    target="_blank"
-                >
-
-                    ▶ Assistir transmissão
-
-                </a>
-
-            `;
-
-        }
-
-        else if (
-            race.category === "F1"
-        ) {
-
-            button = `
-
-                <a
-                    class="watch"
-                    href="https://globoplay.globo.com/"
-                    target="_blank"
-                >
-
-                    ▶ Assistir na Globo
-
-                </a>
-
-            `;
-
-        }
-
-        else {
-
-            button = `
-
-                <a
-                    class="watch disabled"
-                    href="#"
-                >
-
-                    Transmissão ainda não encontrada
-
-                </a>
-
-            `;
-
-        }
+        return;
+    }
 
 
-        const card = document.createElement("article");
-
-        card.className =
-            "race";
-
-
-        card.dataset.category =
-            race.category;
+    racesContainer.innerHTML = filtered
+        .map(race => createRaceCard(race))
+        .join("");
+}
 
 
-        card.innerHTML = `
+function createRaceCard(race) {
+
+    let transmission = "";
+
+    if (race.transmissionUrl) {
+
+        transmission = `
+            <a
+                class="watch"
+                href="${race.transmissionUrl}"
+                target="_blank"
+                rel="noopener"
+            >
+                ▶ Assistir transmissão
+            </a>
+        `;
+
+    } else {
+
+        transmission = `
+            <a
+                class="watch"
+                href="${race.searchUrl}"
+                target="_blank"
+                rel="noopener"
+            >
+                🔎 Procurar transmissão
+            </a>
+        `;
+    }
+
+
+    return `
+        <article class="race">
 
             <div class="race-top">
 
                 <span class="category">
-
-                    ${race.category}
-
+                    ${escapeHTML(race.category)}
                 </span>
 
-                <span class="next">
-
-                    PRÓXIMO EVENTO
-
+                <span class="state">
+                    ${escapeHTML(race.status || "PRÓXIMO")}
                 </span>
 
             </div>
 
 
             <h3>
-
-                ${race.name}
-
+                ${escapeHTML(race.name)}
             </h3>
 
 
             <p class="date">
-
-                📅 ${race.date}
-
+                📅 ${escapeHTML(race.date || "Data não informada")}
             </p>
 
 
-            <div class="transmission">
+            <div class="source">
 
-                <p>
-
-                    📺 TRANSMISSÃO:
-                    ${
-                        transmission?.channel ||
-                        race.transmission
-                    }
-
-                </p>
-
-                ${button}
+                Calendário:
+                ${escapeHTML(race.source || "Fonte oficial")}
 
             </div>
 
-        `;
+
+            ${transmission}
 
 
-        container.appendChild(card);
+            ${
+                race.calendarUrl
+                ? `
+                    <a
+                        class="calendar-link"
+                        href="${race.calendarUrl}"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Ver calendário da fonte →
+                    </a>
+                `
+                : ""
+            }
+
+        </article>
+    `;
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+filters.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        filters.forEach(
+            b => b.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        currentFilter =
+            button.dataset.filter;
+
+        render();
 
     });
 
-}
+});
 
 
-// ======================================
-// FILTRO
-// ======================================
+refreshButton.addEventListener(
+    "click",
+    loadRaces
+);
 
-function filter(category) {
-
-    if (category === "ALL") {
-
-        renderRaces(allRaces);
-
-        return;
-
-    }
-
-
-    const filtered =
-        allRaces.filter(
-            race =>
-                race.category === category
-        );
-
-
-    renderRaces(filtered);
-
-}
-
-
-// ======================================
-// INICIAR
-// ======================================
 
 loadRaces();
-
-
-// ======================================
-// ATUALIZAÇÃO AUTOMÁTICA
-// ======================================
-
-// Atualiza a cada 30 minutos.
-
-setInterval(
-    loadRaces,
-    30 * 60 * 1000
-);
