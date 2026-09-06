@@ -1,0 +1,428 @@
+name: Atualizar calendário RaceHub
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+
+permissions:
+  contents: write
+
+
+jobs:
+
+  update:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+
+      - name: Instalar dependências
+        run: |
+          pip install requests beautifulsoup4
+
+
+      - name: Criar atualizador
+        run: |
+
+          mkdir -p data
+
+          cat > update.py <<'PY'
+
+          import requests
+          import json
+          import re
+          from bs4 import BeautifulSoup
+          from datetime import datetime, timezone
+
+
+          SOURCES = {
+
+              "F1": {
+                  "url": "https://www.espn.com.br/f1/calendario",
+                  "calendar": "https://www.espn.com.br/f1/calendario"
+              },
+
+              "WEC": {
+                  "url": "https://motorsport.uol.com.br/wec/schedule/2026/",
+                  "calendar": "https://motorsport.uol.com.br/wec/schedule/2026/"
+              },
+
+              "STOCK CAR": {
+                  "url": "https://motorsport.uol.com.br/stockcar-br/schedule/2026/",
+                  "calendar": "https://motorsport.uol.com.br/stockcar-br/schedule/2026/"
+              }
+
+          }
+
+
+          HEADERS = {
+              "User-Agent":
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+          }
+
+
+          def clean(text):
+
+              return re.sub(
+                  r"\s+",
+                  " ",
+                  text
+              ).strip()
+
+
+          def get_page(url):
+
+              try:
+
+                  response = requests.get(
+                      url,
+                      headers=HEADERS,
+                      timeout=30
+                  )
+
+                  response.raise_for_status()
+
+                  return response.text
+
+              except Exception as error:
+
+                  print(
+                      "Erro ao acessar:",
+                      url,
+                      error
+                  )
+
+                  return ""
+
+
+          def parse_tables(html, category):
+
+              soup = BeautifulSoup(
+                  html,
+                  "html.parser"
+              )
+
+              races = []
+
+
+              for table in soup.find_all("table"):
+
+                  rows = table.find_all("tr")
+
+                  for row in rows:
+
+                      cells = [
+                          clean(cell.get_text(" ", strip=True))
+                          for cell in row.find_all(
+                              ["td", "th"]
+                          )
+                      ]
+
+
+                      cells = [
+                          cell
+                          for cell in cells
+                          if cell
+                      ]
+
+
+                      if len(cells) < 2:
+                          continue
+
+
+                      text = " | ".join(cells)
+
+
+                      if len(text) < 5:
+                          continue
+
+
+                      races.append({
+
+                          "category": category,
+
+                          "name": cells[-1]
+                              if len(cells) > 1
+                              else cells[0],
+
+                          "date": cells[0],
+
+                          "source":
+                              "ESPN"
+                              if category == "F1"
+                              else "Motorsport.com"
+
+                      })
+
+
+              return races
+
+
+          def parse_text_fallback(html, category):
+
+              soup = BeautifulSoup(
+                  html,
+                  "html.parser"
+              )
+
+
+              text = clean(
+                  soup.get_text(" ", strip=True)
+              )
+
+
+              races = []
+
+
+              if not text:
+                  return races
+
+
+              # Procura nomes de circuitos/eventos
+              # quando a página não possui tabela HTML.
+
+
+              keywords = [
+
+                  "Monza",
+                  "Madrid",
+                  "Bahrain",
+                  "Spa",
+                  "Le Mans",
+                  "Interlagos",
+                  "Fuji",
+                  "Silverstone",
+                  "Austin",
+                  "São Paulo",
+                  "Brasília",
+                  "Goiânia",
+                  "Velocitta"
+
+              ]
+
+
+              for keyword in keywords:
+
+                  if keyword.lower() in text.lower():
+
+                      races.append({
+
+                          "category": category,
+
+                          "name": keyword,
+
+                          "date": "",
+
+                          "source":
+                              "ESPN"
+                              if category == "F1"
+                              else "Motorsport.com"
+
+                      })
+
+
+              return races
+
+
+          def add_transmission(race):
+
+              category = race["category"]
+
+
+              if category == "F1":
+
+                  race["transmission"] = "Globo"
+
+                  race["transmissionUrl"] = (
+                      "https://globoplay.globo.com/"
+                  )
+
+                  race["searchUrl"] = (
+                      "https://www.google.com/search?q="
+                      + requests.utils.quote(
+                          race["name"]
+                          + " F1 Globo transmissão"
+                      )
+                  )
+
+
+              elif category == "WEC":
+
+                  race["transmission"] = "YouTube"
+
+                  query = (
+                      race["name"]
+                      + " WEC 2026 Grande Prêmio"
+                  )
+
+                  race["transmissionUrl"] = ""
+
+                  race["searchUrl"] = (
+                      "https://www.youtube.com/results?search_query="
+                      + requests.utils.quote(query)
+                  )
+
+
+              elif category == "STOCK CAR":
+
+                  race["transmission"] = "YouTube"
+
+                  query = (
+                      race["name"]
+                      + " Stock Car Brasil 2026"
+                  )
+
+                  race["transmissionUrl"] = ""
+
+                  race["searchUrl"] = (
+                      "https://www.youtube.com/results?search_query="
+                      + requests.utils.quote(query)
+                  )
+
+
+              race["calendarUrl"] = SOURCES[
+                  category
+              ]["calendar"]
+
+
+              race["status"] = "PRÓXIMO"
+
+
+              return race
+
+
+          all_races = []
+
+
+          for category, source in SOURCES.items():
+
+              print(
+                  "Atualizando:",
+                  category
+              )
+
+
+              html = get_page(
+                  source["url"]
+              )
+
+
+              if not html:
+
+                  continue
+
+
+              races = parse_tables(
+                  html,
+                  category
+              )
+
+
+              if not races:
+
+                  races = parse_text_fallback(
+                      html,
+                      category
+                  )
+
+
+              for race in races:
+
+                  all_races.append(
+                      add_transmission(race)
+                  )
+
+
+          # Remove duplicados
+
+          unique = []
+
+          seen = set()
+
+
+          for race in all_races:
+
+              key = (
+                  race["category"],
+                  race["name"],
+                  race["date"]
+              )
+
+
+              if key not in seen:
+
+                  seen.add(key)
+
+                  unique.append(race)
+
+
+          output = {
+
+              "updatedAt":
+                  datetime.now(
+                      timezone.utc
+                  ).isoformat(),
+
+              "races": unique
+
+          }
+
+
+          with open(
+              "data/index.json",
+              "w",
+              encoding="utf-8"
+          ) as file:
+
+              json.dump(
+                  output,
+                  file,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+
+          print(
+              "Corridas encontradas:",
+              len(unique)
+          )
+
+          PY
+
+
+      - name: Executar atualização
+        run: |
+          python update.py
+
+
+      - name: Salvar calendário
+        run: |
+
+          git config user.name "RaceHub Bot"
+
+          git config user.email "actions@github.com"
+
+          git add data/index.json
+
+          git diff --cached --quiet || \
+          git commit -m "Atualizar calendário"
+
+          git push
