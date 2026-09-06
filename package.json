@@ -1,0 +1,14 @@
+{
+  "name": "racehub",
+  "version": "1.0.0",
+  "description": "Hub de transmissões e calendário de automobilismo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0"
+  }
+}
