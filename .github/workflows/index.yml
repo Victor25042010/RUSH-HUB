@@ -10,10 +10,8 @@ on:
     branches:
       - main
 
-
 permissions:
   contents: write
-
 
 jobs:
 
@@ -21,25 +19,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
-
     steps:
 
       - name: Baixar repositório
         uses: actions/checkout@v4
-
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-
       - name: Instalar dependências
         run: |
           pip install requests beautifulsoup4
 
-
-      - name: Criar atualizador
+      - name: Atualizar calendário
         run: |
 
           mkdir -p data
@@ -51,31 +45,37 @@ jobs:
           import re
           from bs4 import BeautifulSoup
           from datetime import datetime, timezone
+          from urllib.parse import quote
 
 
           SOURCES = {
 
               "F1": {
                   "url": "https://www.espn.com.br/f1/calendario",
-                  "calendar": "https://www.espn.com.br/f1/calendario"
+                  "calendar": "https://www.espn.com.br/f1/calendario",
+                  "source": "ESPN"
               },
 
               "WEC": {
                   "url": "https://motorsport.uol.com.br/wec/schedule/2026/",
-                  "calendar": "https://motorsport.uol.com.br/wec/schedule/2026/"
+                  "calendar": "https://motorsport.uol.com.br/wec/schedule/2026/",
+                  "source": "Motorsport.com"
               },
 
               "STOCK CAR": {
                   "url": "https://motorsport.uol.com.br/stockcar-br/schedule/2026/",
-                  "calendar": "https://motorsport.uol.com.br/stockcar-br/schedule/2026/"
+                  "calendar": "https://motorsport.uol.com.br/stockcar-br/schedule/2026/",
+                  "source": "Motorsport.com"
               }
 
           }
 
 
           HEADERS = {
+
               "User-Agent":
-                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+              "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36"
+
           }
 
 
@@ -100,12 +100,18 @@ jobs:
 
                   response.raise_for_status()
 
+                  print(
+                      "OK:",
+                      url,
+                      response.status_code
+                  )
+
                   return response.text
 
               except Exception as error:
 
                   print(
-                      "Erro ao acessar:",
+                      "ERRO:",
                       url,
                       error
                   )
@@ -113,7 +119,7 @@ jobs:
                   return ""
 
 
-          def parse_tables(html, category):
+          def parse_motorsport(html, category):
 
               soup = BeautifulSoup(
                   html,
@@ -122,15 +128,53 @@ jobs:
 
               races = []
 
-
               for table in soup.find_all("table"):
 
                   rows = table.find_all("tr")
 
-                  for row in rows:
+                  if not rows:
+                      continue
+
+
+                  header = []
+
+                  first_cells = rows[0].find_all(
+                      ["th", "td"]
+                  )
+
+                  header = [
+                      clean(x.get_text(" ", strip=True)).lower()
+                      for x in first_cells
+                  ]
+
+
+                  date_index = None
+                  event_index = None
+
+
+                  for i, value in enumerate(header):
+
+                      if "data" in value:
+                          date_index = i
+
+                      if (
+                          "evento" in value
+                          or "etapa" in value
+                          or "circuit" in value
+                          or "local" in value
+                      ):
+                          event_index = i
+
+
+                  for row in rows[1:]:
 
                       cells = [
-                          clean(cell.get_text(" ", strip=True))
+                          clean(
+                              cell.get_text(
+                                  " ",
+                                  strip=True
+                              )
+                          )
                           for cell in row.find_all(
                               ["td", "th"]
                           )
@@ -138,9 +182,7 @@ jobs:
 
 
                       cells = [
-                          cell
-                          for cell in cells
-                          if cell
+                          x for x in cells if x
                       ]
 
 
@@ -148,10 +190,45 @@ jobs:
                           continue
 
 
-                      text = " | ".join(cells)
+                      # Ignora cabeçalhos
+                      joined = " ".join(
+                          cells
+                      ).lower()
 
 
-                      if len(text) < 5:
+                      if (
+                          "data evento" in joined
+                          or joined == "data"
+                          or joined == "evento"
+                      ):
+                          continue
+
+
+                      if (
+                          date_index is not None
+                          and date_index < len(cells)
+                      ):
+
+                          date = cells[date_index]
+
+                      else:
+
+                          date = cells[0]
+
+
+                      if (
+                          event_index is not None
+                          and event_index < len(cells)
+                      ):
+
+                          name = cells[event_index]
+
+                      else:
+
+                          name = cells[1]
+
+
+                      if not name:
                           continue
 
 
@@ -159,16 +236,15 @@ jobs:
 
                           "category": category,
 
-                          "name": cells[-1]
-                              if len(cells) > 1
-                              else cells[0],
+                          "name": name,
 
-                          "date": cells[0],
+                          "date": date,
 
                           "source":
-                              "ESPN"
-                              if category == "F1"
-                              else "Motorsport.com"
+                              SOURCES[category]["source"],
+
+                          "calendarUrl":
+                              SOURCES[category]["calendar"]
 
                       })
 
@@ -176,65 +252,75 @@ jobs:
               return races
 
 
-          def parse_text_fallback(html, category):
+          def parse_espn(html):
 
               soup = BeautifulSoup(
                   html,
                   "html.parser"
               )
 
-
-              text = clean(
-                  soup.get_text(" ", strip=True)
-              )
-
-
               races = []
 
 
-              if not text:
-                  return races
+              # Primeiro tenta tabelas
+
+              for table in soup.find_all("table"):
+
+                  rows = table.find_all("tr")
 
 
-              # Procura nomes de circuitos/eventos
-              # quando a página não possui tabela HTML.
+                  for row in rows:
+
+                      cells = [
+                          clean(
+                              x.get_text(
+                                  " ",
+                                  strip=True
+                              )
+                          )
+                          for x in row.find_all(
+                              ["td", "th"]
+                          )
+                      ]
 
 
-              keywords = [
-
-                  "Monza",
-                  "Madrid",
-                  "Bahrain",
-                  "Spa",
-                  "Le Mans",
-                  "Interlagos",
-                  "Fuji",
-                  "Silverstone",
-                  "Austin",
-                  "São Paulo",
-                  "Brasília",
-                  "Goiânia",
-                  "Velocitta"
-
-              ]
+                      cells = [
+                          x for x in cells if x
+                      ]
 
 
-              for keyword in keywords:
+                      if len(cells) < 2:
+                          continue
 
-                  if keyword.lower() in text.lower():
+
+                      text = " ".join(
+                          cells
+                      )
+
+
+                      lower = text.lower()
+
+
+                      if (
+                          "calendário" in lower
+                          or lower == "data"
+                          or lower == "evento"
+                      ):
+                          continue
+
 
                       races.append({
 
-                          "category": category,
+                          "category": "F1",
 
-                          "name": keyword,
+                          "name": cells[-1],
 
-                          "date": "",
+                          "date": cells[0],
 
-                          "source":
-                              "ESPN"
-                              if category == "F1"
-                              else "Motorsport.com"
+                          "source": "ESPN",
+
+                          "calendarUrl":
+                              SOURCES["F1"]["calendar"]
 
                       })
 
@@ -246,65 +332,53 @@ jobs:
 
               category = race["category"]
 
+              name = race["name"]
+
 
               if category == "F1":
 
                   race["transmission"] = "Globo"
 
-                  race["transmissionUrl"] = (
+                  race["transmissionUrl"] = \
                       "https://globoplay.globo.com/"
-                  )
 
-                  race["searchUrl"] = (
-                      "https://www.google.com/search?q="
-                      + requests.utils.quote(
-                          race["name"]
-                          + " F1 Globo transmissão"
+                  race["searchUrl"] = \
+                      "https://www.google.com/search?q=" + \
+                      quote(
+                          name +
+                          " F1 Globo transmissão"
                       )
-                  )
 
 
               elif category == "WEC":
 
                   race["transmission"] = "YouTube"
 
-                  query = (
-                      race["name"]
-                      + " WEC 2026 Grande Prêmio"
-                  )
-
                   race["transmissionUrl"] = ""
 
-                  race["searchUrl"] = (
-                      "https://www.youtube.com/results?search_query="
-                      + requests.utils.quote(query)
-                  )
+                  race["searchUrl"] = \
+                      "https://www.youtube.com/results?search_query=" + \
+                      quote(
+                          name +
+                          " WEC 2026 Grande Prêmio"
+                      )
 
 
               elif category == "STOCK CAR":
 
                   race["transmission"] = "YouTube"
 
-                  query = (
-                      race["name"]
-                      + " Stock Car Brasil 2026"
-                  )
-
                   race["transmissionUrl"] = ""
 
-                  race["searchUrl"] = (
-                      "https://www.youtube.com/results?search_query="
-                      + requests.utils.quote(query)
-                  )
-
-
-              race["calendarUrl"] = SOURCES[
-                  category
-              ]["calendar"]
+                  race["searchUrl"] = \
+                      "https://www.youtube.com/results?search_query=" + \
+                      quote(
+                          name +
+                          " Stock Car Brasil 2026"
+                      )
 
 
               race["status"] = "PRÓXIMO"
-
 
               return race
 
@@ -312,46 +386,103 @@ jobs:
           all_races = []
 
 
-          for category, source in SOURCES.items():
+          # ==========================
+          # F1
+          # ==========================
+
+          print("Buscando F1...")
+
+          f1_html = get_page(
+              SOURCES["F1"]["url"]
+          )
+
+
+          if f1_html:
+
+              f1_races = parse_espn(
+                  f1_html
+              )
 
               print(
-                  "Atualizando:",
-                  category
+                  "F1 encontradas:",
+                  len(f1_races)
+              )
+
+              all_races.extend(
+                  f1_races
               )
 
 
-              html = get_page(
-                  source["url"]
+          # ==========================
+          # WEC
+          # ==========================
+
+          print("Buscando WEC...")
+
+          wec_html = get_page(
+              SOURCES["WEC"]["url"]
+          )
+
+
+          if wec_html:
+
+              wec_races = parse_motorsport(
+                  wec_html,
+                  "WEC"
+              )
+
+              print(
+                  "WEC encontradas:",
+                  len(wec_races)
+              )
+
+              all_races.extend(
+                  wec_races
               )
 
 
-              if not html:
+          # ==========================
+          # STOCK CAR
+          # ==========================
 
-                  continue
+          print("Buscando Stock Car...")
+
+          stock_html = get_page(
+              SOURCES["STOCK CAR"]["url"]
+          )
 
 
-              races = parse_tables(
-                  html,
-                  category
+          if stock_html:
+
+              stock_races = parse_motorsport(
+                  stock_html,
+                  "STOCK CAR"
+              )
+
+              print(
+                  "Stock Car encontradas:",
+                  len(stock_races)
+              )
+
+              all_races.extend(
+                  stock_races
               )
 
 
-              if not races:
+          # ==========================
+          # Transmissões
+          # ==========================
 
-                  races = parse_text_fallback(
-                      html,
-                      category
-                  )
+          for race in all_races:
 
-
-              for race in races:
-
-                  all_races.append(
-                      add_transmission(race)
-                  )
+              add_transmission(
+                  race
+              )
 
 
-          # Remove duplicados
+          # ==========================
+          # Remover duplicados
+          # ==========================
 
           unique = []
 
@@ -361,18 +492,26 @@ jobs:
           for race in all_races:
 
               key = (
-                  race["category"],
-                  race["name"],
-                  race["date"]
+                  race.get("category"),
+                  race.get("name"),
+                  race.get("date")
               )
 
 
-              if key not in seen:
+              if key in seen:
+                  continue
 
-                  seen.add(key)
 
-                  unique.append(race)
+              seen.add(key)
 
+              unique.append(
+                  race
+              )
+
+
+          # ==========================
+          # Salvar JSON
+          # ==========================
 
           output = {
 
@@ -381,7 +520,8 @@ jobs:
                       timezone.utc
                   ).isoformat(),
 
-              "races": unique
+              "races":
+                  unique
 
           }
 
@@ -401,19 +541,25 @@ jobs:
 
 
           print(
-              "Corridas encontradas:",
+              "=============================="
+          )
+
+          print(
+              "TOTAL DE CORRIDAS:",
               len(unique)
+          )
+
+          print(
+              "=============================="
           )
 
           PY
 
 
-      - name: Executar atualização
-        run: |
           python update.py
 
 
-      - name: Salvar calendário
+      - name: Salvar alterações
         run: |
 
           git config user.name "RaceHub Bot"
@@ -423,6 +569,6 @@ jobs:
           git add data/index.json
 
           git diff --cached --quiet || \
-          git commit -m "Atualizar calendário"
+          git commit -m "Atualizar calendário RaceHub"
 
           git push
