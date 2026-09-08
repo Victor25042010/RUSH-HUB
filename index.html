@@ -4,100 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>RaceHub</title>
+    <title>RushHub — Todas as corridas em um só lugar</title>
 
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="CSS/index.css">
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        RACE<span>HUB</span>
-    </div>
+    <!-- BACKGROUND -->
+    <div class="hero">
 
-    <div class="online">
-        <i></i> ATUALIZAÇÃO AUTOMÁTICA
-    </div>
-</header>
+        <div class="video-background">
 
+            <video id="backgroundVideo" autoplay muted playsinline>
+                <source src="assets/videos/f1.mp4" type="video/mp4">
+            </video>
 
-<main>
+        </div>
 
-    <section class="hero">
-        <span>AUTOMOBILISMO</span>
+        <div class="overlay"></div>
 
-        <h1>
-            Todas as corridas.<br>
-            <strong>Um só lugar.</strong>
-        </h1>
+        <!-- CONTEÚDO -->
+        <main class="hero-content">
 
-        <p>
-            Calendários e transmissões das principais
-            categorias de automobilismo.
-        </p>
-    </section>
-
-
-    <section class="section">
-
-        <div class="section-header">
-            <div>
-                <small>CALENDÁRIO</small>
-                <h2>Corridas</h2>
+            <div class="brand">
+                RUSHHUB
             </div>
 
-            <button id="refresh">↻</button>
+            <div class="line"></div>
+
+            <h1>
+                TODAS AS<br>
+                <span>CORRIDAS.</span>
+            </h1>
+
+            <p>
+                Calendários, categorias e informações das principais
+                corridas do automobilismo em um só lugar.
+            </p>
+
+            <a href="categorias.html" class="explore-button">
+                EXPLORAR CORRIDAS
+                <span>→</span>
+            </a>
+
+        </main>
+
+        <!-- CATEGORIA ATUAL -->
+        <div class="category-indicator">
+            <span id="categoryName">FORMULA 1</span>
+            <div class="indicator-line">
+                <div id="indicatorProgress"></div>
+            </div>
         </div>
 
-
-        <div class="filters">
-
-            <button class="filter active" data-filter="TODAS">
-                Todas
-            </button>
-
-            <button class="filter" data-filter="F1">
-                F1
-            </button>
-
-            <button class="filter" data-filter="WEC">
-                WEC
-            </button>
-
-            <button class="filter" data-filter="STOCK CAR">
-                Stock Car
-            </button>
-
+        <div class="scroll-indicator">
+            SCROLL
+            <span>↓</span>
         </div>
 
-
-        <div id="status" class="status">
-            Carregando calendário...
-        </div>
-
-
-        <div id="races"></div>
-
-    </section>
-
-</main>
-
-
-<footer>
-
-    <div>
-        RaceHub
     </div>
 
-    <span>
-        Dados atualizados automaticamente
-    </span>
-
-</footer>
-
-
-<script src="index.js"></script>
+    <script src="JS/index.js"></script>
 
 </body>
 </html>
