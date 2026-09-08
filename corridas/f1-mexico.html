@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RushHub — GP da Austrália 2026</title>
+    <link rel="stylesheet" href="../CSS/corrida.css">
+    <link rel="stylesheet" href="../CSS/rush-auto.css">
+</head>
+<body>
+
+<header class="top-header">
+    <a href="../index.html" class="logo">RUSHHUB</a>
+    <div class="header-center">FORMULA 1 · 2026</div>
+    <a href="../calendarios/f1.html" class="back">← CALENDÁRIO</a>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="eyebrow">ETAPA · 2026 · 🇲🇽 AUSTRÁLIA</span>
+        <h1>GP DA <span>AUSTRÁLIA</span></h1>
+        <p>Autódromo Hermanos Rodríguez · Melbourne · Fórmula 1</p>
+    </div>
+</section>
+
+<div class="live-bar">
+    <div class="live-label" id="raceStatus">ENCERRADA</div>
+    <div class="eyebrow">RUSHHUB RACE CONTROL</div>
+</div>
+
+<main class="container">
+
+    <div class="grid">
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>🗺 Circuito</h2>
+                <small>ALBERT PARK CIRCUIT</small>
+            </div>
+
+            <div class="track-wrap">
+                <!-- SVG do circuito. Pode ser substituído por outro SVG quando quiser. -->
+                <svg class="track-svg" viewBox="0 0 900 500" role="img" aria-label="Representação do circuito">
+                    <path class="track-line" d="M185 350 C110 315 125 195 220 175 C300 158 320 90 420 105 C525 120 535 185 650 160 C755 138 820 205 760 280 C715 335 630 325 570 355 C500 390 450 435 350 405 C285 385 250 380 185 350 Z"/>
+                    <path class="track-inner" d="M185 350 C110 315 125 195 220 175 C300 158 320 90 420 105 C525 120 535 185 650 160 C755 138 820 205 760 280 C715 335 630 325 570 355 C500 390 450 435 350 405 C285 385 250 380 185 350 Z"/>
+                    <line class="start-line" x1="178" y1="333" x2="195" y2="365"/>
+                    <text class="track-label" x="205" y="305">START / FINISH</text>
+                    <text class="track-label" x="370" y="75">ALBERT PARK</text>
+                </svg>
+            </div>
+
+            <div class="stats">
+                <div class="stat"><span>EXTENSÃO</span><strong>5.278 km</strong></div>
+                <div class="stat"><span>VOLTA ATUAL</span><strong>58 / 58</strong></div>
+                <div class="stat"><span id="raceMode">TEMPO TOTAL</span><strong class="timer" id="raceCounter">1:24:00.893</strong></div>
+            </div>
+
+            <div class="progress"><div id="progressBar"></div></div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>🏆 Pódio</h2>
+                <small>RESULTADO FINAL</small>
+            </div>
+
+            <!-- Preencha com o pódio real depois da corrida -->
+            <div class="podium">
+                <div class="podium-card">
+                    <b>1º</b>
+                    <strong>ADICIONE O PILOTO</strong>
+                    <small>EQUIPE</small>
+                </div>
+                <div class="podium-card">
+                    <b>2º</b>
+                    <strong>ADICIONE O PILOTO</strong>
+                    <small>EQUIPE</small>
+                </div>
+                <div class="podium-card">
+                    <b>3º</b>
+                    <strong>ADICIONE O PILOTO</strong>
+                    <small>EQUIPE</small>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="section-title">
+        <h2>Classificação final</h2>
+        <span>EDITE MANUALMENTE APÓS CADA CORRIDA</span>
+    </div>
+
+    <section class="panel">
+        <div class="result-grid">
+            <div class="muted">POS</div><div class="muted">PILOTO / EQUIPE</div><div class="muted">TEMPO / GAP</div><div class="muted">VOLTA</div>
+
+            <div>01</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>--</div><div>58</div>
+            <div>02</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>03</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>04</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>05</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>06</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>07</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>08</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>09</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+            <div>10</div><div><b>ADICIONE O PILOTO</b><br><span class="muted">EQUIPE</span></div><div>+--.---</div><div>58</div>
+        </div>
+    </section>
+
+    <div class="section-title">
+        <h2>Melhores momentos</h2>
+        <span>VÍDEO DA CORRIDA</span>
+    </div>
+
+    <section class="panel">
+        <div class="video">
+            <!-- Troque o href pelo link oficial/autorizado dos melhores momentos -->
+            <a href="#" onclick="return false;">ADICIONAR VÍDEO DOS MELHORES MOMENTOS</a>
+        </div>
+        <div class="video-note">
+            Cole aqui o link de uma transmissão ou vídeo que você tenha autorização para incorporar.
+            Para YouTube, podemos transformar esta área em um player incorporado depois.
+        </div>
+    </section>
+
+    <div class="section-title">
+        <h2>Race control</h2>
+        <span>HUD DA ETAPA</span>
+    </div>
+
+    <section class="panel">
+        <div class="positions">
+            <div class="driver">
+                <span class="pos">01</span>
+                <div class="driver-name">ADICIONE O PILOTO<span class="team">EQUIPE</span></div>
+                <span class="gap">LÍDER</span>
+                <span class="lap">58/58</span>
+            </div>
+            <div class="driver">
+                <span class="pos">02</span>
+                <div class="driver-name">ADICIONE O PILOTO<span class="team">EQUIPE</span></div>
+                <span class="gap">+--.---</span>
+                <span class="lap">58/58</span>
+            </div>
+            <div class="driver">
+                <span class="pos">03</span>
+                <div class="driver-name">ADICIONE O PILOTO<span class="team">EQUIPE</span></div>
+                <span class="gap">+--.---</span>
+                <span class="lap">58/58</span>
+            </div>
+            <div class="driver">
+                <span class="pos">04</span>
+                <div class="driver-name">ADICIONE O PILOTO<span class="team">EQUIPE</span></div>
+                <span class="gap">+--.---</span>
+                <span class="lap">58/58</span>
+            </div>
+            <div class="driver">
+                <span class="pos">05</span>
+                <div class="driver-name">ADICIONE O PILOTO<span class="team">EQUIPE</span></div>
+                <span class="gap">+--.---</span>
+                <span class="lap">58/58</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>RUSHHUB · MOTORSPORT HUB</footer>
+<script src="../JS/dados-corridas.js"></script>
+<script src="../JS/f1-dados.js"></script>
+<script src="../JS/f1-race-ui.js"></script>
+<script src="../JS/corrida.js"></script>
+</body>
+</html>
