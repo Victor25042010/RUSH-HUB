@@ -1,70 +1,309 @@
-const video = document.getElementById("backgroundVideo");
-const categoryName = document.getElementById("categoryName");
-const progress = document.getElementById("indicatorProgress");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-const clips = [
-    {
-        video: "assets/videos/f1.mp4",
-        name: "FORMULA 1"
-    },
-    {
-        video: "assets/videos/wec.mp4",
-        name: "WEC"
-    },
-    {
-        video: "assets/videos/stockcar.mp4",
-        name: "STOCK CAR"
-    },
-    {
-        video: "assets/videos/endurance.mp4",
-        name: "ENDURANCE"
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    background: #050505;
+    color: #fff;
+}
+
+
+/* HERO */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* VIDEO */
+
+.video-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* OVERLAY */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.88) 0%,
+            rgba(0, 0, 0, 0.62) 45%,
+            rgba(0, 0, 0, 0.30) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.75) 0%,
+            transparent 40%
+        );
+}
+
+
+/* CONTEÚDO */
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(1200px, 90%);
+    height: 100%;
+
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+/* LOGO */
+
+.brand {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.45em;
+
+    margin-bottom: 28px;
+
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+}
+
+
+.line {
+    width: 45px;
+    height: 2px;
+    background: white;
+
+    margin-bottom: 30px;
+
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+    animation-delay: .1s;
+}
+
+
+/* TITULO */
+
+h1 {
+    font-size: clamp(55px, 8vw, 110px);
+    line-height: 0.88;
+    font-weight: 900;
+    letter-spacing: -0.06em;
+
+    margin-bottom: 35px;
+
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+    animation-delay: .2s;
+}
+
+h1 span {
+    color: transparent;
+    -webkit-text-stroke: 1px white;
+}
+
+
+/* TEXTO */
+
+.hero-content p {
+    max-width: 470px;
+
+    font-size: 15px;
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    margin-bottom: 38px;
+
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+    animation-delay: .35s;
+}
+
+
+/* BOTÃO */
+
+.explore-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 35px;
+
+    padding: 17px 23px;
+
+    color: #050505;
+    background: white;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+
+    transition: .35s ease;
+
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+    animation-delay: .5s;
+}
+
+.explore-button span {
+    font-size: 20px;
+    transition: .35s ease;
+}
+
+.explore-button:hover {
+    padding-right: 30px;
+    transform: translateX(5px);
+}
+
+.explore-button:hover span {
+    transform: translateX(6px);
+}
+
+
+/* INDICADOR */
+
+.category-indicator {
+    position: absolute;
+    z-index: 3;
+
+    right: 6%;
+    bottom: 55px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .2em;
+}
+
+.indicator-line {
+    width: 180px;
+    height: 2px;
+
+    background: rgba(255, 255, 255, .3);
+}
+
+#indicatorProgress {
+    width: 0%;
+    height: 100%;
+    background: white;
+}
+
+
+/* SCROLL */
+
+.scroll-indicator {
+    position: absolute;
+    z-index: 3;
+
+    left: 6%;
+    bottom: 50px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 9px;
+    letter-spacing: .3em;
+
+    color: rgba(255,255,255,.55);
+}
+
+.scroll-indicator span {
+    font-size: 17px;
+}
+
+
+/* ANIMAÇÃO */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
     }
-];
 
-let currentClip = 0;
-
-function changeClip() {
-
-    currentClip++;
-
-    if (currentClip >= clips.length) {
-        currentClip = 0;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-
-    video.style.opacity = "0";
-
-    setTimeout(() => {
-
-        video.src = clips[currentClip].video;
-
-        categoryName.textContent = clips[currentClip].name;
-
-        video.load();
-        video.play();
-
-        video.style.opacity = "1";
-
-    }, 500);
 
 }
 
 
-/* Quando o vídeo terminar */
-video.addEventListener("ended", changeClip);
+/* MOBILE */
 
+@media (max-width: 700px) {
 
-/* Barra de progresso */
+    .overlay {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0,0,0,.82),
+                rgba(0,0,0,.55)
+            ),
+            linear-gradient(
+                0deg,
+                rgba(0,0,0,.8),
+                transparent
+            );
+    }
 
-function updateProgress() {
+    .hero-content {
+        width: 86%;
+    }
 
-    if (!video.duration) return;
+    h1 {
+        font-size: clamp(48px, 15vw, 75px);
+    }
 
-    const percentage =
-        (video.currentTime / video.duration) * 100;
+    .hero-content p {
+        font-size: 14px;
+        max-width: 350px;
+    }
 
-    progress.style.width = percentage + "%";
+    .category-indicator {
+        right: 7%;
+        bottom: 25px;
+    }
 
-    requestAnimationFrame(updateProgress);
+    .scroll-indicator {
+        display: none;
+    }
+
+    .indicator-line {
+        width: 110px;
+    }
+
 }
-
-updateProgress();
