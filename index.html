@@ -11,21 +11,24 @@
 
 <body>
 
-    <!-- BACKGROUND -->
-    <div class="hero">
+    <main class="hero">
 
+        <!-- VÍDEO DE FUNDO -->
         <div class="video-background">
-
-            <video id="backgroundVideo" autoplay muted playsinline>
-                <source src="assets/videos/f1.mp4" type="video/mp4">
+            <video
+                id="backgroundVideo"
+                autoplay
+                muted
+                playsinline
+                preload="auto">
             </video>
-
         </div>
 
+        <!-- CAMADA ESCURA -->
         <div class="overlay"></div>
 
         <!-- CONTEÚDO -->
-        <main class="hero-content">
+        <section class="hero-content">
 
             <div class="brand">
                 RUSHHUB
@@ -39,8 +42,8 @@
             </h1>
 
             <p>
-                Calendários, categorias e informações das principais
-                corridas do automobilismo em um só lugar.
+                Descubra calendários, categorias e informações
+                das principais corridas do automobilismo.
             </p>
 
             <a href="categorias.html" class="explore-button">
@@ -48,22 +51,28 @@
                 <span>→</span>
             </a>
 
-        </main>
+        </section>
 
-        <!-- CATEGORIA ATUAL -->
+        <!-- CATEGORIA DO VÍDEO -->
         <div class="category-indicator">
-            <span id="categoryName">FORMULA 1</span>
+
+            <span id="categoryName">
+                FORMULA 1
+            </span>
+
             <div class="indicator-line">
                 <div id="indicatorProgress"></div>
             </div>
+
         </div>
 
+        <!-- INDICADOR -->
         <div class="scroll-indicator">
             SCROLL
             <span>↓</span>
         </div>
 
-    </div>
+    </main>
 
     <script src="JS/index.js"></script>
 
