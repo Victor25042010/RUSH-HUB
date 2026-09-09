@@ -14,12 +14,12 @@
   };
 
   const builtIns = {
-    f1:{name:'F1 TV / transmissão oficial',url:'https://f1tv.formula1.com/',type:'external'},
-    f2:{name:'F1 TV / transmissão oficial',url:'https://f1tv.formula1.com/',type:'external'},
-    wec:{name:'FIA WEC+',url:'https://plus.fiawec.com/',type:'external'},
-    formulae:{name:'Fórmula E — canal oficial',url:'https://www.youtube.com/@FIAFormulaE',type:'external'},
-    stockcar:{name:'Stock Car — canal oficial',url:'https://www.youtube.com/@StockCarBRB',type:'external'},
-    porschecup:{name:'Porsche Cup Brasil — canal oficial',url:'https://www.youtube.com/@PorscheCupBrasil',type:'external'}
+    f1:{name:'TV Globo / Globoplay — F1',url:'https://globoplay.globo.com/',type:'tv-digital'},
+    f2:{name:'F1 TV — F2 (pago)',url:'https://f1tv.formula1.com/',type:'paid'},
+    wec:{name:'YouTube oficial FIA WEC — corrida/GP',url:'https://www.youtube.com/@FIAWEC/search?query=2026',type:'youtube'},
+    formulae:{name:'YouTube oficial Formula E — corrida',url:'https://www.youtube.com/@FIAFormulaE/search?query=2026',type:'youtube'},
+    stockcar:{name:'YouTube oficial Stock Car — corrida',url:'https://www.youtube.com/@StockCarBRB/search?query=2026',type:'youtube'},
+    porschecup:{name:'YouTube oficial Porsche Cup Brasil — corrida',url:'https://www.youtube.com/@PorscheCupBrasil/search?query=2026',type:'youtube'}
   };
 
   function getCustom(){
@@ -55,13 +55,47 @@
     catalog.forEach(n=>{if(!out.includes(n))out.push(n)});
     return out.slice(0,6);
   }
+  function getDriverTeam(driver){
+    const known={
+      'Kimi Antonelli':'Mercedes','George Russell':'Mercedes','Lewis Hamilton':'Ferrari',
+      'Lando Norris':'McLaren','Charles Leclerc':'Ferrari','Max Verstappen':'Red Bull Racing',
+      'Oscar Piastri':'McLaren','Isack Hadjar':'Red Bull Racing','Liam Lawson':'Racing Bulls',
+      'Pierre Gasly':'Alpine','Arvid Lindblad':'Racing Bulls','Franco Colapinto':'Alpine',
+      'Oliver Bearman':'Haas F1 Team','Gabriel Bortoleto':'Audi','Nico Hulkenberg':'Audi',
+      'Carlos Sainz':'Williams','Alexander Albon':'Williams','Esteban Ocon':'Haas F1 Team',
+      'Fernando Alonso':'Aston Martin','Yuki Tsunoda':'Racing Bulls','Lance Stroll':'Aston Martin',
+      'Valtteri Bottas':'Cadillac','Sergio Perez':'Cadillac'
+    };
+    if(known[driver]) return known[driver];
+    const item=(window.RUSHHUB_ONBOARDS?.[cat]||[]).find(x=>x.driver===driver);
+    if(item?.team) return item.team;
+    const standings=window.RUSH_V7?.standings?.[cat]||[];
+    const hit=standings.find(x=>String(x[1]).trim()===String(driver).trim());
+    if(hit?.[2]) return hit[2];
+    const rows=window.RUSH_V7?.raceResults?.[slug]||[];
+    for(const r of rows){
+      if(String(r[1]).includes(driver)) return r[2]||'';
+      if(String(r[2]).includes(driver)) return r[1]||'';
+    }
+    return '';
+  }
+  function teamChannel(team){
+    const map=window.RUSHHUB_TEAM_CHANNELS||{};
+    if(map[team]) return map[team];
+    const key=Object.keys(map).find(k=>team && (team.includes(k)||k.includes(team)));
+    return key?map[key]:null;
+  }
   function onboardUrl(driver){
     const item=(window.RUSHHUB_ONBOARDS?.[cat]||[]).find(x=>x.driver===driver);
-    return item?.url || youtubeSearch(driver);
+    if(item?.url) return item.url;
+    const team=getDriverTeam(driver);
+    const channel=teamChannel(team);
+    const q=encodeURIComponent(`${driver} onboard ${race.name.replace(/^.*?·\s*/,'')}`);
+    return channel ? `${channel}/search?query=${q}` : `https://www.youtube.com/results?search_query=${q}`;
   }
-  function youtubeSearch(driver){
-    const q = `${driver} onboard ${race.name.replace(/^.*?·\s*/,'')} ${cat} official`;
-    return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q);
+  function onboardLabel(driver){
+    const team=getDriverTeam(driver);
+    return team ? `CANAL ${team}` : 'CANAL OFICIAL';
   }
   function render(){
     addStyles();
@@ -70,8 +104,8 @@
     const dayDriver=custom.driverOfDay || winner;
     const wrap=document.createElement('section'); wrap.id='rh-command'; wrap.className='rh-command';
     const driverDay=dayDriver || 'A definir';
-    const onboardAllowed=!['f1','f2'].includes(cat);
-    const onboardHtml=onboardAllowed ? `<div class="rh-cmd-box"><div class="rh-cmd-head"><b>ONBOARD CONTROL</b><small>CLIQUE NO PILOTO</small></div><div class="rh-cmd-body"><div class="rh-onboard-list">${(drivers.length?drivers:['Piloto da etapa']).map((d,i)=>`<button class="rh-onboard-btn" data-driver="${esc(d)}"><strong>${esc(d)}</strong><span>ABRIR ONBOARD OFICIAL ↗</span></button>`).join('')}</div></div></div>` : '';
+    const onboardAllowed=cat!=='f2';
+    const onboardHtml=onboardAllowed ? `<div class="rh-cmd-box"><div class="rh-cmd-head"><b>ONBOARD CONTROL</b><small>CLIQUE NO PILOTO</small></div><div class="rh-cmd-body"><div class="rh-onboard-list">${(drivers.length?drivers:['Piloto da etapa']).map((d,i)=>`<button class="rh-onboard-btn" data-driver="${esc(d)}"><strong>${esc(d)}</strong><span>${esc(onboardLabel(d))} · ABRIR ↗</span></button>`).join('')}</div></div></div>` : '';
     wrap.innerHTML=`<div class="rh-command-grid"><div class="rh-cmd-box"><div class="rh-cmd-head"><b>RACE COMMAND</b><small>${s==='live'?'● AO VIVO':s==='finished'?'✓ ENCERRADA':'◷ PRÓXIMA'}</small></div><div class="rh-cmd-body"><div class="rh-transmission"><span class="rh-live-dot ${s==='live'?'':'off'}"></span><div><b>${esc(t?.name || 'Transmissão não configurada')}</b><span>${s==='live'?'A corrida está acontecendo agora.':s==='upcoming'?'A transmissão será ativada quando a sessão começar.':'Transmissão oficial / replay disponível conforme o fornecedor.'}</span>${t?.url?`<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${s==='live'?'ASSISTIR AGORA ↗':'ABRIR TRANSMISSÃO ↗'}</a>`:''}</div></div></div></div><div class="rh-cmd-box"><div class="rh-cmd-head"><b>PILOTO DO DIA</b><small>AUTOMÁTICO</small></div><div class="rh-cmd-body"><div class="rh-driver-day"><div><strong>${esc(driverDay)}</strong><small>${custom.driverOfDay?'DESTAQUE DEFINIDO NO PAINEL':'AUTOMÁTICO PELO RESULTADO'}</small></div><div class="driver-number">01</div></div></div></div></div>${winner && s==='finished' ? `<div class="rh-winner"><div class="rh-winner-inner"><span class="tag">🏆 VENCEDOR DA ETAPA</span><h3>${esc(winner)}</h3><p>${esc(winnerTeam || 'Resultado final')} · O RushHub destacou o vencedor automaticamente.</p></div></div>` : ''}${onboardHtml}<div class="rh-hud-line" style="margin-top:12px"><span class="rh-chip">STATUS <strong>${s.toUpperCase()}</strong></span><span class="rh-chip">CATEGORIA <strong>${esc(cat.toUpperCase())}</strong></span><span class="rh-chip">HORA <strong id="rh-clock">${fmtTime(new Date())}</strong></span><a class="rh-chip rh-admin-link" href="../admin-transmissoes.html">⚙ PAINEL DE TRANSMISSÕES</a></div>`;
     main.appendChild(wrap);
 
@@ -83,7 +117,9 @@
     const item=(window.RUSHHUB_ONBOARDS?.[cat]||[]).find(x=>x.driver===driver);
     const target=onboardUrl(driver);
     const exact=!!item?.url;
-    const modal=document.createElement('div'); modal.className='rh-modal open'; modal.innerHTML=`<div class="rh-modal-card"><div class="rh-modal-head"><strong>ONBOARD · ${esc(driver)}</strong><button aria-label="Fechar">×</button></div><div class="rh-modal-body">${exact?`<iframe src="https://www.youtube.com/embed/${encodeURIComponent(target.split('v=')[1]?.split('&')[0]||'')}" title="Onboard ${esc(driver)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`:`<div style="height:100%;display:grid;place-items:center;text-align:center;padding:30px;background:radial-gradient(circle,#191919,#070707)"><div><div style="font-size:40px">🎥</div><h3 style="margin:10px 0">Onboard oficial</h3><p style="color:#777;font-size:11px;max-width:460px">Não existe um vídeo oficial específico cadastrado para este piloto nesta etapa. Abra a busca oficial para localizar a onboard disponível.</p><a href="${esc(target)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#fff;color:#000;padding:11px 14px;text-decoration:none;border-radius:4px;font-size:9px;font-weight:900">ABRIR BUSCA OFICIAL ↗</a></div></div>`}</div><div class="rh-modal-note">Somente fontes oficiais/autorizadas são usadas pelo RushHub.</div></div>`;
+    const team=getDriverTeam(driver);
+    const channel=teamChannel(team);
+    const modal=document.createElement('div'); modal.className='rh-modal open'; modal.innerHTML=`<div class="rh-modal-card"><div class="rh-modal-head"><strong>ONBOARD · ${esc(driver)}</strong><button aria-label="Fechar">×</button></div><div class="rh-modal-body">${exact?`<iframe src="https://www.youtube.com/embed/${encodeURIComponent(target.split('v=')[1]?.split('&')[0]||'')}" title="Onboard ${esc(driver)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`:`<div style="height:100%;display:grid;place-items:center;text-align:center;padding:30px;background:radial-gradient(circle,#191919,#070707)"><div><div style="font-size:40px">🎥</div><h3 style="margin:10px 0">Onboard oficial · ${esc(team||'Equipe')}</h3><p style="color:#777;font-size:11px;max-width:460px">A busca foi direcionada para o canal da própria equipe${team?' '+esc(team):''}. Quando a equipe publicar a onboard, ela aparecerá ali.</p><a href="${esc(target)}" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#fff;color:#000;padding:11px 14px;text-decoration:none;border-radius:4px;font-size:9px;font-weight:900">ABRIR CANAL DA EQUIPE ↗</a></div></div>`}</div><div class="rh-modal-note">Fonte: ${esc(channel||'canal oficial da equipe')}. Somente fontes oficiais/autorizadas.</div></div>`;
     document.body.appendChild(modal); const close=()=>modal.remove(); modal.querySelector('button').onclick=close; modal.onclick=e=>{if(e.target===modal)close()};
   }
   function launchConfetti(){
