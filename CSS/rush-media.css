@@ -1,0 +1,36 @@
+/* RUSHHUB — mídia WEC / 24H */
+.rush-media-title{margin:42px 0 15px;display:flex;justify-content:space-between;align-items:end;gap:20px}
+.rush-media-title h2{font-size:18px;letter-spacing:-.3px}
+.rush-media-title span{font-size:9px;color:#666;letter-spacing:1.5px;text-align:right}
+.rush-media-panel{background:#0e0e0e;border:1px solid #242424;border-radius:4px;overflow:hidden}
+.rush-media-live{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:24px}
+.rush-media-kicker{font-size:9px;letter-spacing:1.8px;color:#777;font-weight:900}
+.rush-media-live h3{font-size:18px;margin:7px 0}
+.rush-media-live p{font-size:11px;color:#777;line-height:1.6}
+.rush-media-button{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:13px 17px;border:1px solid #444;font-size:10px;font-weight:900;letter-spacing:1px;transition:.2s}
+.rush-media-button:hover{background:#e10600;border-color:#e10600;color:#fff}
+.rush-media-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.rush-media-card{background:#0e0e0e;border:1px solid #242424;border-radius:4px;overflow:hidden;min-height:105px;display:flex;align-items:center}
+.rush-media-video-card{display:block}
+.rush-media-video{aspect-ratio:16/9;background:#050505}
+.rush-media-video iframe{width:100%;height:100%;border:0;display:block}
+.rush-media-icon{width:68px;min-width:68px;height:105px;display:flex;align-items:center;justify-content:center;background:#090909;color:#aaa;font-size:19px;border-right:1px solid #222}
+.rush-media-card-body{padding:17px;display:flex;flex-direction:column;gap:10px}
+.rush-media-card-body strong{font-size:11px;line-height:1.5}
+.rush-media-card-body a{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.rush-media-card-body a:hover{color:#fff}
+.rush-media-note{margin-top:10px;padding:13px 15px;background:#0b0b0b;border:1px solid #202020;color:#666;font-size:10px;line-height:1.6}
+@media(max-width:850px){
+ .rush-media-title{align-items:flex-start;flex-direction:column;gap:7px}
+ .rush-media-title span{text-align:left}
+ .rush-media-live{flex-direction:column;align-items:flex-start}
+ .rush-media-button{width:100%}
+ .rush-media-grid{grid-template-columns:1fr}
+}
+.rush-season-picker{margin:0 0 24px;padding:14px 16px;border:1px solid #242424;background:#0e0e0e;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.rush-season-picker label{font-size:9px;letter-spacing:1.5px;color:#777;font-weight:900}.rush-season-picker select{background:#090909;color:#fff;border:1px solid #333;padding:9px 12px;font-weight:800}.rush-season-note{font-size:10px;color:#666}.rush-season-archive{padding:20px;border:1px solid #242424;background:#0e0e0e;margin-bottom:25px;color:#aaa;font-size:11px;line-height:1.6}.rush-season-archive strong{color:#fff;letter-spacing:1.5px}.rush-season-archive a{display:inline-block;margin-top:10px;color:#fff;text-decoration:underline}.rush-media-title{margin:42px 0 15px}.rush-media-live{min-height:110px}.rush-media-button{background:#e10600;color:#fff;border-color:#e10600}
+@media(max-width:700px){.rush-media-grid{grid-template-columns:1fr}.rush-media-live{align-items:flex-start;flex-direction:column}.rush-media-button{width:100%}}
+
+/* Arquivo histórico */
+.rush-season-media{max-width:1200px;margin:24px auto;padding:0 20px 20px}
+.rush-season-archive{margin:18px 0;padding:18px 20px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.03)}
+.rush-season-archive a{display:inline-block;margin-top:10px}

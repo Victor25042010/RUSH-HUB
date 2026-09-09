@@ -1,38 +1,9 @@
-/* RUSHHUB — TRANSMISSÕES AO VIVO WEC / 24H
-   EDITE SOMENTE ESTE ARQUIVO para escolher onde cada corrida será transmitida.
-   Use apenas links oficiais/autorizados.
-*/
-window.RUSH_LIVE_TRANSMISSIONS = {
-  'wec-01-6-horas-de-imola': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-02-6-horas-de-spa-francorchamps': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-03-24-horas-de-le-mans': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-04-6-horas-de-sao-paulo': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-05-lone-star-le-mans': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-06-6-horas-de-fuji': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-07-6-horas-de-barcelona': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  },
-  'wec-08-6-horas-de-monza': {
-    name: 'FIA WEC+',
-    url: 'https://plus.fiawec.com/'
-  }
+/* RUSHHUB — destinos oficiais de transmissão. O motor só exibe isto DURANTE a corrida. */
+window.RUSH_LIVE = {
+  f1: {name:'F1 TV / transmissão oficial', url:'https://f1tv.formula1.com/'},
+  f2: {name:'F1 TV / transmissão oficial', url:'https://f1tv.formula1.com/'},
+  wec: {name:'FIA WEC+', url:'https://plus.fiawec.com/'},
+  stockcar: {name:'YouTube oficial Stock Car', url:'https://www.youtube.com/@StockCarBRB'},
+  formulae: {name:'Fórmula E — transmissão oficial', url:'https://www.youtube.com/@FIAFormulaE'},
+  porschecup: {name:'Porsche Cup Brasil — canal oficial', url:'https://www.youtube.com/@PorscheCupBrasil'}
 };
