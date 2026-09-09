@@ -1,0 +1,14 @@
+(() => {
+ const slug=document.body.dataset.race, race=window.RUSH_RACES?.[slug], v=window.RUSH_V6; if(!race||!v)return;
+ const box=document.getElementById('rush-positions'); if(!box)return;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const src=v.sources[race.category]||'#';
+ const podium=v.podiums[slug];
+ const rows=podium?podium.map((n,i)=>`<tr class="top-three"><td>${i+1}</td><td><strong>${esc(n)}</strong></td><td>—</td><td>${i===0?'VENCEDOR':i===1?'2º':'3º'}</td><td>—</td></tr>`).join(''):'';
+ const catLabel={wec:'FIA WEC',stockcar:'CBA / STOCK CAR',formulae:'FIA FORMULA E',porschecup:'PORSCHE CUP BRASIL',f2:'FIA FORMULA 2'}[race.category]||race.category.toUpperCase();
+ const stockStand=[['Felipe Fraga','423'],['Enzo Weisheimer','410'],['Felipe Massa','398'],['Rubens Barrichello','377'],['Rafael Suzuki','366']];
+ box.innerHTML=`<div class="rush-pos-head"><div><b>${podium?'RESULTADO DA ETAPA':'CLASSIFICAÇÃO OFICIAL'}</b><span>${podium?'PÓDIO VERIFICADO':'DADOS OFICIAIS DA CATEGORIA'}</span></div><span class="rush-pos-live">${podium?'✓ CONFIRMADO':'↗ OFICIAL'}</span></div>${podium?`<div class="rush-pos-scroll"><table class="rush-pos-table"><thead><tr><th>#</th><th>PILOTO / EQUIPE</th><th>CLASSE</th><th>RESULTADO</th><th>VOLTAS</th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="rush-pos-state"><b>Tabela oficial da ${esc(catLabel)}</b><small>O RushHub não inventa posições. Abra a classificação oficial para ver o resultado completo desta etapa.</small><a href="${esc(src)}" target="_blank" rel="noopener noreferrer">ABRIR CLASSIFICAÇÃO OFICIAL ↗</a></div>`}<div class="rush-pos-foot">Fonte: ${esc(catLabel)} · <a href="${esc(src)}" target="_blank" rel="noopener noreferrer">fonte oficial ↗</a></div>`;
+ if(race.category==='stockcar'){ const card=box.closest('.positions-card'); const tbl=document.createElement('div'); tbl.className='v6-champ'; tbl.innerHTML='<div class="v6-champ-head"><b>CAMPEONATO STOCK CAR 2026</b><span>CLASSIFICAÇÃO CBA</span></div><div class="rush-pos-scroll"><table class="rush-pos-table"><thead><tr><th>#</th><th>PILOTO</th><th>PONTOS</th></tr></thead><tbody>'+stockStand.map((r,i)=>`<tr class="${i===0?'top-three':''}"><td>${i+1}</td><td><strong>${esc(r[0])}</strong></td><td>${r[1]}</td></tr>`).join('')+'</tbody></table></div><div class="rush-pos-foot">Fonte: CBA — classificação 2026.</div>'; box.appendChild(tbl); }
+ // Add championship standings link as a second, useful layer for categories without a public race API.
+ const card=box.closest('.positions-card'); if(card && !card.querySelector('.v6-standings')){const a=document.createElement('a');a.className='v6-standings';a.href=src;a.target='_blank';a.rel='noopener noreferrer';a.textContent='VER TABELA DO CAMPEONATO ↗';card.appendChild(a)}
+})();
