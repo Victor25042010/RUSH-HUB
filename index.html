@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070709">
+  <meta name="description" content="RUSH HUB — hub de Fórmula 1 com calendário, corridas, resultados e campeonatos.">
+  <title>RUSH HUB — Fórmula 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div id="loader" class="loader">
+    <div class="loader-logo">RUSH<span>HUB</span></div>
+    <div class="loader-track"><div id="loaderBar"></div></div>
+    <div class="loader-car" aria-hidden="true">▰━▰</div>
+    <small>CARREGANDO DADOS DA TEMPORADA</small>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="./">RUSH<span>HUB</span></a>
+    <nav>
+      <a href="#calendario">Calendário</a>
+      <a href="campeonatos/pilotos.html">Pilotos</a>
+      <a href="campeonatos/equipes.html">Equipes</a>
+    </nav>
+    <button id="menuBtn" class="icon-btn" aria-label="Abrir menu">☰</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-media">
+        <video autoplay muted loop playsinline poster="assets/images/hero-fallback.svg">
+          <source src="assets/video/f1-hero.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow">FORMULA 1 • RUSH HUB</span>
+        <h1>A temporada<br><em>em um só lugar.</em></h1>
+        <p>Calendário, resultados, circuitos e campeonatos organizados para você acompanhar cada etapa.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#calendario">Ver calendário</a>
+          <a class="btn ghost" href="campeonatos/pilotos.html">Campeonato</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="calendario" class="section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">TEMPORADA</span>
+          <h2>Calendário F1 <span id="seasonLabel">2026</span></h2>
+        </div>
+        <div class="data-state" id="dataState">Carregando dados…</div>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </section>
+
+    <section class="section split">
+      <article class="panel">
+        <div class="section-head compact">
+          <div><span class="eyebrow">CLASSIFICAÇÃO</span><h2>Pilotos</h2></div>
+          <a class="text-link" href="campeonatos/pilotos.html">Ver completa →</a>
+        </div>
+        <div id="driversPreview" class="standings-preview"></div>
+      </article>
+      <article class="panel">
+        <div class="section-head compact">
+          <div><span class="eyebrow">CLASSIFICAÇÃO</span><h2>Construtores</h2></div>
+          <a class="text-link" href="campeonatos/equipes.html">Ver completa →</a>
+        </div>
+        <div id="teamsPreview" class="standings-preview"></div>
+      </article>
+    </section>
+  </main>
+
+  <button id="topBtn" class="top-btn" aria-label="Voltar ao topo">↑</button>
+  <footer>RUSH HUB · Dados estruturados por fontes externas · <span id="updatedAt">—</span></footer>
+  <script type="module" src="JS/home.js"></script>
+</body>
+</html>

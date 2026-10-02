@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Corrida — RUSH HUB</title>
+<link rel="stylesheet" href="../CSS/style.css"><link rel="stylesheet" href="../CSS/race.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="../">RUSH<span>HUB</span></a><nav><a href="../#calendario">Calendário</a><a href="../campeonatos/pilotos.html">Pilotos</a><a href="../campeonatos/equipes.html">Equipes</a></nav></header>
+<main id="racePage" class="race-page">
+  <section id="raceHero" class="race-hero"></section>
+  <section class="race-section"><div class="section-head compact"><div><span class="eyebrow">CIRCUITO</span><h2>Traçado</h2></div></div><div class="circuit-card"><img id="circuitMap" src="../assets/circuits/_placeholder/layout.svg" alt="Mapa do circuito"><div id="circuitMeta"></div></div></section>
+  <section class="race-section"><div class="section-head compact"><div><span class="eyebrow">CLASSIFICAÇÃO DA ETAPA</span><h2>Corrida</h2></div><span id="timingState" class="pill">DADOS HISTÓRICOS</span></div><div class="table-wrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Equipe</th><th>Pneus</th><th>Pits</th><th>Voltas</th><th>Gap</th><th>Status</th><th>Punição</th></tr></thead><tbody id="raceTable"><tr><td colspan="9">Carregando…</td></tr></tbody></table></div></section>
+  <section class="race-section"><div class="section-head compact"><div><span class="eyebrow">MÍDIA</span><h2>Vídeos</h2></div></div><div class="video-grid"><div class="video-card"><h3>Corrida</h3><p>Vídeo disponível somente quando houver uma fonte legítima e incorporável.</p><span>Vídeo indisponível no momento.</span></div><div class="video-card"><h3>Voltas</h3><p>Melhores voltas e onboard quando houver fonte válida.</p><span>Vídeo indisponível no momento.</span></div><div class="video-card"><h3>Pit Stops</h3><p>Paradas nos boxes e momentos relacionados.</p><span>Vídeo indisponível no momento.</span></div></div></section>
+  <section class="race-section split"><article class="panel"><div class="section-head compact"><div><span class="eyebrow">CAMPEONATO</span><h2>Pilotos</h2></div></div><div id="driversPreview"></div></article><article class="panel"><div class="section-head compact"><div><span class="eyebrow">CAMPEONATO</span><h2>Construtores</h2></div></div><div id="teamsPreview"></div></article></section>
+</main>
+<button id="topBtn" class="top-btn">↑</button><footer>RUSH HUB · Dados históricos e oficiais conforme disponibilidade da fonte</footer>
+<script type="module" src="../JS/race.js"></script>
+</body></html>
