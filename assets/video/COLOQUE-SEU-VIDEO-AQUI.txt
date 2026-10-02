@@ -1,0 +1,1 @@
+Coloque aqui o arquivo de vídeo MP4 da abertura/background e renomeie para f1-bg.mp4.
