@@ -1,0 +1,87 @@
+{
+  "drivers": [
+    [
+      "01",
+      "Kimi Antonelli",
+      "ITA",
+      "Mercedes",
+      "—"
+    ],
+    [
+      "02",
+      "George Russell",
+      "GBR",
+      "Mercedes",
+      "—"
+    ],
+    [
+      "03",
+      "Lewis Hamilton",
+      "GBR",
+      "Ferrari",
+      "—"
+    ],
+    [
+      "04",
+      "Charles Leclerc",
+      "MON",
+      "Ferrari",
+      "—"
+    ],
+    [
+      "05",
+      "Lando Norris",
+      "GBR",
+      "McLaren",
+      "—"
+    ],
+    [
+      "06",
+      "Max Verstappen",
+      "NED",
+      "Red Bull Racing",
+      "—"
+    ],
+    [
+      "07",
+      "Oscar Piastri",
+      "AUS",
+      "McLaren",
+      "—"
+    ],
+    [
+      "08",
+      "Isack Hadjar",
+      "FRA",
+      "Red Bull Racing",
+      "—"
+    ]
+  ],
+  "teams": [
+    [
+      "01",
+      "Mercedes",
+      "—"
+    ],
+    [
+      "02",
+      "Ferrari",
+      "—"
+    ],
+    [
+      "03",
+      "McLaren",
+      "—"
+    ],
+    [
+      "04",
+      "Red Bull Racing",
+      "—"
+    ],
+    [
+      "05",
+      "Racing Bulls",
+      "—"
+    ]
+  ]
+}

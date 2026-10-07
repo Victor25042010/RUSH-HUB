@@ -1,0 +1,198 @@
+{
+  "season": 2026,
+  "updatedAt": "2026-10-07",
+  "races": [
+    {
+      "round": "01",
+      "country": "Austrália",
+      "city": "Melbourne",
+      "date": "08 MAR",
+      "circuit": "Albert Park",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "02",
+      "country": "China",
+      "city": "Xangai",
+      "date": "15 MAR",
+      "circuit": "Shanghai International Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "03",
+      "country": "Japão",
+      "city": "Suzuka",
+      "date": "29 MAR",
+      "circuit": "Suzuka Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "04",
+      "country": "Bahrein",
+      "city": "Sakhir",
+      "date": "12 ABR",
+      "circuit": "Bahrain International Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "05",
+      "country": "Arábia Saudita",
+      "city": "Jeddah",
+      "date": "19 ABR",
+      "circuit": "Jeddah Corniche Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "06",
+      "country": "Miami",
+      "city": "Miami Gardens",
+      "date": "03 MAI",
+      "circuit": "Miami International Autodrome",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "07",
+      "country": "Canadá",
+      "city": "Montreal",
+      "date": "24 MAI",
+      "circuit": "Circuit Gilles-Villeneuve",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "08",
+      "country": "Mônaco",
+      "city": "Monte Carlo",
+      "date": "07 JUN",
+      "circuit": "Circuit de Monaco",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "09",
+      "country": "Espanha",
+      "city": "Barcelona",
+      "date": "14 JUN",
+      "circuit": "Circuit de Barcelona-Catalunya",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "10",
+      "country": "Áustria",
+      "city": "Spielberg",
+      "date": "28 JUN",
+      "circuit": "Red Bull Ring",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "11",
+      "country": "Grã-Bretanha",
+      "city": "Silverstone",
+      "date": "05 JUL",
+      "circuit": "Silverstone Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "12",
+      "country": "Bélgica",
+      "city": "Spa",
+      "date": "19 JUL",
+      "circuit": "Circuit de Spa-Francorchamps",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "13",
+      "country": "Hungria",
+      "city": "Budapeste",
+      "date": "26 JUL",
+      "circuit": "Hungaroring",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "14",
+      "country": "Países Baixos",
+      "city": "Zandvoort",
+      "date": "23 AGO",
+      "circuit": "Circuit Zandvoort",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "15",
+      "country": "Itália",
+      "city": "Monza",
+      "date": "06 SET",
+      "circuit": "Autodromo Nazionale Monza",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "16",
+      "country": "Espanha",
+      "city": "Madrid",
+      "date": "13 SET",
+      "circuit": "Madring",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "17",
+      "country": "Azerbaijão",
+      "city": "Baku",
+      "date": "26 SET",
+      "circuit": "Baku City Circuit",
+      "status": "FINALIZADA"
+    },
+    {
+      "round": "18",
+      "country": "Singapura",
+      "city": "Singapura",
+      "date": "11 OUT",
+      "circuit": "Marina Bay Street Circuit",
+      "status": "PRÓXIMA"
+    },
+    {
+      "round": "19",
+      "country": "Estados Unidos",
+      "city": "Austin",
+      "date": "25 OUT",
+      "circuit": "Circuit of The Americas",
+      "status": "AGENDADA"
+    },
+    {
+      "round": "20",
+      "country": "México",
+      "city": "Cidade do México",
+      "date": "01 NOV",
+      "circuit": "Autódromo Hermanos Rodríguez",
+      "status": "AGENDADA"
+    },
+    {
+      "round": "21",
+      "country": "Brasil",
+      "city": "São Paulo",
+      "date": "08 NOV",
+      "circuit": "Autódromo José Carlos Pace",
+      "status": "AGENDADA"
+    },
+    {
+      "round": "22",
+      "country": "Estados Unidos",
+      "city": "Las Vegas",
+      "date": "21 NOV",
+      "circuit": "Las Vegas Strip Circuit",
+      "status": "AGENDADA"
+    },
+    {
+      "round": "23",
+      "country": "Qatar",
+      "city": "Lusail",
+      "date": "29 NOV",
+      "circuit": "Lusail International Circuit",
+      "status": "AGENDADA"
+    },
+    {
+      "round": "24",
+      "country": "Abu Dhabi",
+      "city": "Yas Marina",
+      "date": "06 DEZ",
+      "circuit": "Yas Marina Circuit",
+      "status": "AGENDADA"
+    }
+  ]
+}
